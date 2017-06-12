@@ -132,30 +132,41 @@ Web Audio Api 学习资料：
 
 ----
 
-## 4、开发中的经验梳理
+## 4、开发中的经验梳理,以及如何把 React 项目重构为 Vue 版本
 Vue 版本和 React 版本核心代码基本相同,但在编写组件的时候遇到了几个问题,比如:
-1. React 版的 store  使用了 immutable 结构的数据,vuex 上的 store 如果使用了 immutable 结构,不利用监听数据变化,故把store 的数据全部使用了普通的数据,在需要这些数据的地方通过 immutable 提供的 `fromJS` 转换,在需要普通数据的地方再通过 immutable 的 `toJS` 转换成普通数据  
 
-2. Vue 没有 React 的`componentWillReceiveProps` 的生命周期,我的解决方法是使用 watch 配合 `deep:true` 来监听 props 的变化,如:
+1. React 版的 store  使用了 immutable 结构的数据,vuex 上的 store 如果使用了 immutable 结构,不利用监听数据变化,故把store 的数据全部使用了普通的数据,在需要这些数据的地方通过 immutable 提供的 `fromJS` 转换,在需要普通数据的地方再通过 immutable 的 `toJS` 转换成普通数据,在实际重构过程中,我尽量避开了核心游戏实现逻辑,实际上我是在没弄懂游戏实现逻辑的情况下完成重构的,只是保证了输入和输出的一致性  
+
+2. 如何把 React 组件改写成 Vue 的,我的思路是把组件当成函数,保证一个输入(props)能得到一个确定的输出(view),然后对不同方法也是做同样处理, React 的 setState 会触发 render 方法,所以可以在 methods自定义 render 方法再在 state 变化后手动触发 render 方法
+
+3. Vue 没有 React 的`componentWillReceiveProps` 的生命周期,我的解决方法是使用 watch 配合 `deep:true` 来监听 props 的变化,如:
 ```js
-watch: {
-  $props: {
-    deep: true,
-    handler(nextProps) {
-      //xxx
+  watch: {
+    $props: {
+      deep: true,
+      handler(nextProps) {
+        //xxx
+      }
     }
   }
-}
 ```
 
-3. `matrix 组件` 的功能逻辑较复杂,使用 `template` 模版来渲染组件已经不合适了,通过自定义 render 方法再手动触发很繁琐,我的解决方法是通过 Vue 的 jsx 转换插件[babel-plugin-transform-vue-jsx](https://github.com/vuejs/babel-plugin-transform-vue-jsx)来使用 jsx 语法对页面进行渲染,当 props 或 state 变化了自动触发 render 方法,另外要注意的是 vue 的 jsx 和 React 的 jsx 书写上有一点的差异
+4. 在必要时候使用 jsx,在这个项目中`matrix 组件` 的功能逻辑较复杂,使用 `template` 模版来渲染组件已经不合适了, React 每次 setState 会触发 render 方法,所以我们可以在 methods自定义 render 方法再在 state 变化后手动触发 render 方法,但是这个方法对有复杂逻辑的组件来说会变得很繁琐,我的解决方法是通过 Vue 的 jsx 转换插件[babel-plugin-transform-vue-jsx](https://github.com/vuejs/babel-plugin-transform-vue-jsx)来使用 jsx 语法对页面进行渲染,当 props 或 state 变化了自动触发 render 方法,另外要注意的是 vue 的 jsx 和 React 的 jsx 书写上有一点的差异
 
 ## 5、架构差异
 Redux 的数据流向是 把 store 的状态转化为 props 注入到 根组件,根组件再把这些 props 传入不同组件,当 store 的状态变化,根组件会重新 render, 更新子组件上的 props,子组件再 根据新 props重新 render
 引用知乎一个答友的回答[https://www.zhihu.com/question/47686258](https://www.zhihu.com/question/47686258)来说就是:
 >单例store的数据在react中可以通过view组件的属性（props）不断由父模块**“单向”**传递给子模块，形成一个树状分流结构。如果我们把redux比作整个应用的“心肺” （redux的flux功能像心脏，reducer功能像肺部毛细血管），那么这个过程可以比作心脏（store）将氧分子（数据）通过动脉毛细血管（props）送到各个器官组织（view组件）末端的view组件，又可以通过flux机制，将携带交互意图信息的action反馈给store。这个过程有点像将携带代谢产物的“红细胞”（action）通过静脉毛细血管又泵回心脏（store）action流回到store以后，action以参数的形式又被分流到各个具体的reducer组件中，这些reducer同样构成一个树状的hierarchy。这个过程像静脉血中的红细胞（action）被运输到肺部毛细血管（reducer组件）接收到action后，各个child reducer以返回值的形式，将最新的state返回给parent reducer，最终确保整个单例store的所有数据是最新的。这个过程可以比作肺部毛细血管的血液充氧后，又被重新泵回了心脏回到步骤1
 
-而 vuex 的思路则不同,任何组件都随时可以通过 this.$store.state.xxx 获取 store 上的数据,更自由,只要 store 上的数据变了,组件都会自动重新渲染
+而 vuex 的思路则不同,任何组件都随时可以通过 this.$store.state.xxx 获取 store 上的数据,更自由,从 store 实例中读取状态最简单的方法就是在计算属性中返回某个状态：
+```js
+computed: {
+    keyboard () {
+      return this.store.state.keyboard
+    }
+  }
+```
+只要 store 上的数据变了,组件都会自动重新渲染
 
 ## 6、开发
 ### 安装
