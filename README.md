@@ -19,12 +19,12 @@
 ![手机](https://img.alicdn.com/tps/TB1kvJyOVXXXXbhaFXXXXXXXXXX-320-555.gif)
 
 ### 数据持久化
-![数据持久化](http://7xkm8j.com1.z0.glb.clouddn.com/persistence.gif)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/SzTNX7rg9Qg" frameborder="0" allowfullscreen></iframe>
 
 玩单机游戏最怕什么？断电。通过订阅 `store.subscribe`，将state储存在localStorage，精确记录所有状态。网页关了刷新了、程序崩溃了、手机没电了，重新打开连接，都可以继续。
 
 ### Vuex 状态预览（[Vue DevTools extension](https://github.com/vuejs/vue-devtools)）
-![Vuex状态预览](http://7xkm8j.com1.z0.glb.clouddn.com/vuex.gif)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/iuoSSTqSAUE" frameborder="0" allowfullscreen></iframe>
 
 Vuex 设计管理了所有应存的状态，这是上面持久化的保证。
 
