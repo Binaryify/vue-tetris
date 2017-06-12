@@ -92,7 +92,7 @@ Immutable学习资料：
 
 
 ## 2、Web Audio Api
-游戏里有很多不同的音效，而实际上只引用了一个音效文件：[/build/music.mp3](https://github.com/chvin/react-tetris/blob/master/build/music.mp3)。借助`Web Audio Api`能够以毫秒级精确、高频率的播放音效，这是`<audio>`标签所做不到的。在游戏进行中按住方向键移动方块，便可以听到高频率的音效。
+游戏里有很多不同的音效，而实际上只引用了一个音效文件：[/build/music.mp3](https://github.com/Binaryify/vue-tetris/blob/master/build/music.mp3)。借助`Web Audio Api`能够以毫秒级精确、高频率的播放音效，这是`<audio>`标签所做不到的。在游戏进行中按住方向键移动方块，便可以听到高频率的音效。
 
 ![网页音效进阶](https://img.alicdn.com/tps/TB1fYgzNXXXXXXnXpXXXXXXXXXX-633-358.png)
 
@@ -101,7 +101,7 @@ Immutable学习资料：
 ![流程](https://img.alicdn.com/tps/TB1nBf1NXXXXXagapXXXXXXXXXX-520-371.png)
 
 其中Source代表一个音频源，Destination代表最终的输出，多个Source合成出了Destination。
-源代码：[/src/unit/music.js](https://github.com/chvin/react-tetris/blob/master/src/unit/music.js) 实现了ajax加载mp3，并转为WAA，控制播放的过程。
+源代码：[/src/unit/music.js](https://github.com/Binaryify/vue-tetris/blob/master/src/unit/music.js) 实现了ajax加载mp3，并转为WAA，控制播放的过程。
 
 `WAA` 在各个浏览器的最新2个版本下的支持情况（[CanIUse](http://caniuse.com/#search=webaudio)）
 
@@ -117,7 +117,7 @@ Web Audio Api 学习资料：
 ----
 ## 3、游戏在体验上的优化
 * 技术：
-	* 按下方向键水平移动和竖直移动的触发频率是不同的，游戏可以定义触发频率，代替原生的事件频率，源代码：[/src/unit/event.js](https://github.com/chvin/react-tetris/blob/master/src/unit/event.js) ；
+	* 按下方向键水平移动和竖直移动的触发频率是不同的，游戏可以定义触发频率，代替原生的事件频率，源代码：[/src/unit/event.js](https://github.com/Binaryify/vue-tetris/blob/master/src/unit/event.js) ；
 	* 左右移动可以 delay 掉落的速度，但在撞墙移动的时候 delay 的稍小；在速度为6级时 通过delay 会保证在一行内水平完整移动一次；
 	* 对按钮同时注册`touchstart`和`mousedown`事件，以供响应式游戏。当`touchstart`发生时，不会触发`mousedown`，而当`mousedown`发生时，由于鼠标移开事件元素可以不触发`mouseup`，将同时监听`mouseout` 模拟 `mouseup`。源代码：[/src/components/keyboard/index.js](https://github.com/Binaryify/vue-tetris/blob/master/src/components/keyboard/index.js)；
 	* 监听了 `visibilitychange` 事件，当页面被隐藏\切换的时候，游戏将不会进行，切换回来将继续，这个`focus`状态也被写进了 Vuex 中。所以当用手机玩来`电话`时，游戏进度将保存；PC开着游戏干别的也不会听到gameover，这有点像 `ios` 应用的切换。
@@ -167,7 +167,7 @@ npm run dev
 ```
 浏览自动打开 [localhost:8080](localhost:8080)
 ### 多语言
-在 [i18n.json](https://github.com/Binaryify/vue-tetris/blob/master/i18n.json) 配置多语言环境，使用"lan"参数匹配语言如：`https://Binaryify.github.io/vue-tetris/?lan=en`
+在 [i18n.json](https://github.com/Binaryify/vue-tetris/blob/master/src/i18n.json) 配置多语言环境，使用"lan"参数匹配语言如：`https://Binaryify.github.io/vue-tetris/?lan=en`
 ### 打包编译
 ```
 npm run build
