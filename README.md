@@ -135,7 +135,7 @@ Web Audio Api 学习资料：
 ## 4、开发中的经验梳理,以及如何把 React 项目重构为 Vue 版本
 Vue 版本和 React 版本核心代码基本相同,但在编写组件的时候遇到了几个问题,比如:
 
-1. React 版的 store  使用了 immutable 结构的数据,vuex 上的 store 如果使用了 immutable 结构,不利用监听数据变化,故把store 的数据全部使用了普通的数据,在需要这些数据的地方通过 immutable 提供的 `fromJS` 转换,在需要普通数据的地方再通过 immutable 的 `toJS` 转换成普通数据,在实际重构过程中,我尽量避开了核心游戏实现逻辑,实际上我是在没弄懂游戏实现逻辑的情况下完成重构的,只是保证了方法的输入和输出的一致性,要做的只是耐心  
+1. React 版的 store  使用了 immutable 结构的数据,vuex 上的 store 如果使用了 immutable 结构,不利用监听数据变化,故把store 的数据全部使用了普通的数据,在需要这些数据的地方通过 immutable 提供的 `fromJS` 转换,在需要普通数据的地方再通过 immutable 的 `toJS` 转换成普通数据,在实际重构过程中,我尽量避开了核心游戏实现逻辑,实际上我是在没弄懂游戏实现逻辑的情况下完成重构的,只是保证了方法的输入和输出的一致性,要做的只是耐心  
 
 2. 如何把 React 组件改写成 Vue 的,我的思路是把组件当成函数,保证一个输入(props)能得到一个确定的输出(view),然后对不同方法也是做同样处理, React 的 setState 会触发 render 方法,所以可以在 methods 自定义 render 方法再在 state 变化后手动触发 render 方法
 
