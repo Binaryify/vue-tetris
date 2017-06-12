@@ -1,4 +1,3 @@
-----
 ## 用Vue、Vuex、Immutable做俄罗斯方块
 
 ----
