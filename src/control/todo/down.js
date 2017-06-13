@@ -35,7 +35,7 @@ const down = store => {
           let matrix = fromJS(state.matrix)
           const shape = cur.shape
           const xy = fromJS(cur.xy)
-          console.log({ matrix, shape, xy })
+          // console.log({ matrix, shape, xy })
           shape.forEach((m, k1) =>
             m.forEach((n, k2) => {
               if (n && xy.get(0) + k1 >= 0) {

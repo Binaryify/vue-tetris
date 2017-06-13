@@ -85,7 +85,7 @@ const states = {
         let matrix = fromJS(state.matrix)
         const shape = cur && cur.shape
         const xy = fromJS(cur && cur.xy)
-        console.log({ matrix, shape, xy })
+        // console.log({ matrix, shape, xy })
         shape.forEach((m, k1) =>
           m.forEach((n, k2) => {
             if (n && xy.get(0) + k1 >= 0) {
