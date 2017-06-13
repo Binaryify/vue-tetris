@@ -82,18 +82,17 @@ const states = {
         store.commit('moveBlock', next)
         states.fallInterval = setTimeout(fall, speeds[state.speedRun - 1])
       } else {
-        let matrix = state.matrix
+        let matrix = fromJS(state.matrix)
         const shape = cur && cur.shape
-        const xy = cur && cur.xy
+        const xy = fromJS(cur && cur.xy)
+        console.log({ matrix, shape, xy })
         shape.forEach((m, k1) =>
           m.forEach((n, k2) => {
-            if (n && xy[0] + k1 >= 0) {
+            if (n && xy.get(0) + k1 >= 0) {
               // 竖坐标可以为负
-              let line = matrix[xy[0] + k1]
-              line[xy[1] + k2] = 1
-              // line = line.set(xy[1] + k2, 1)
-              matrix[xy[0] + k1] = line
-              // matrix = matrix.set(xy[0] + k1, line)
+              let line = matrix.get(xy.get(0) + k1)
+              line = line.set(xy.get(1) + k2, 1)
+              matrix = matrix.set(xy.get(0) + k1, line)
             }
           })
         )

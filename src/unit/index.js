@@ -1,5 +1,5 @@
 import { blockType, StorageKey } from './const'
-import { fromJS } from 'immutable'
+import { fromJS, List } from 'immutable'
 const hiddenProperty = (() => {
   // document[hiddenProperty] 可以判断页面是否失焦
   let names = ['hidden', 'webkitHidden', 'mozHidden', 'msHidden']
@@ -61,6 +61,10 @@ const unit = {
   },
   isOver(matrix) {
     // 游戏是否结束, 第一行落下方块为依据
+    // console.log(matrix)
+    if (List.isList(matrix)) {
+      matrix = matrix.toJS()
+    }
     return matrix[0].some(n => !!n)
   },
   subscribeRecord(store) {

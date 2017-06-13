@@ -2,6 +2,7 @@ import { want } from '../../unit/'
 import event from '../../unit/event'
 import states from '../states'
 import { music } from '../../unit/music'
+import { fromJS, List } from 'immutable'
 const down = store => {
   store.commit('key_down', true)
   if (store.state.cur !== null) {
@@ -31,18 +32,17 @@ const down = store => {
           // store.dispatch(actions.moveBlock(next));
           states.auto()
         } else {
-          let matrix = state.matrix
+          let matrix = fromJS(state.matrix)
           const shape = cur.shape
-          const xy = cur.xy
+          const xy = fromJS(cur.xy)
+          console.log({ matrix, shape, xy })
           shape.forEach((m, k1) =>
             m.forEach((n, k2) => {
-              if (n && xy[0] + k1 >= 0) {
+              if (n && xy.get(0) + k1 >= 0) {
                 // 竖坐标可以为负
-                let line = matrix[xy[0] + k1]
-                // line = line.set(xy[1] + k2, 1);
-                line[xy[1] + k2] = 1
-                matrix[xy[0] + k1] = line
-                // matrix = matrix.set(xy[0] + k1, line);
+                let line = matrix.get(xy.get(0) + k1)
+                line = line.set(xy.get(1) + k2, 1)
+                matrix = matrix.set(xy.get(0) + k1, line)
               }
             })
           )
