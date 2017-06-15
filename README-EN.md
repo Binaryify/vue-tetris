@@ -1,5 +1,5 @@
 ### 中文介绍
-请查看 [README.md](https://github.com/chvin/react-tetris/blob/master/README.md)
+请查看 [README.md](https://github.com/binaryify/vue-tetris/blob/master/README.md)
 
 ----
 ## Use Vue, Vuex, Immutable to code Tetris.
@@ -87,7 +87,7 @@ Immutable learning materials:
 * [Immutable.js](http://facebook.github.io/immutable-js/)
 
 ## 2. Web Audio Api
-There are many different sound effects in the game, but in fact we keep only a reference to a sound file: [/build/music.mp3](https://github.com/chvin/react-tetris/blob/master/build/music.mp3). With the help of `Web Audio Api`, you can play audio in millisecond precision, with a high frequency, which is not possible with the `<audio>` tag. Press the arrow keys to move the box while the game is in progress, you can hear high-frequency sound.
+There are many different sound effects in the game, but in fact we keep only a reference to a sound file: [/build/music.mp3](https://github.com/binaryify/vue-tetris/blob/master/build/music.mp3). With the help of `Web Audio Api`, you can play audio in millisecond precision, with a high frequency, which is not possible with the `<audio>` tag. Press the arrow keys to move the box while the game is in progress, you can hear high-frequency sound.
 
 ![Web audio advanced](https://img.alicdn.com/tps/TB1fYgzNXXXXXXnXpXXXXXXXXXX-633-358.png)
 
@@ -96,7 +96,7 @@ There are many different sound effects in the game, but in fact we keep only a r
 ![Process](https://img.alicdn.com/tps/TB1nBf1NXXXXXagapXXXXXXXXXX-520-371.png)
 
 Where `Source` represents an audio source, `Destination` represents the final output. Multiple Sources compose the Destination.
-Source Code:[/src/unit/music.js](https://github.com/chvin/react-tetris/blob/master/src/unit/music.js). To achieve ajax loading mp3, and to WAA, control the playback process.
+Source Code:[/src/unit/music.js](https://github.com/binaryify/vue-tetris/blob/master/src/unit/music.js). To achieve ajax loading mp3, and to WAA, control the playback process.
 
 `WAA` is supported in the latest 2 versions of each browser([CanIUse](http://caniuse.com/#search=webaudio))
 
@@ -113,9 +113,9 @@ Web Audio Api learning materials:
 
 ## 3. Game on the experience of optimization
 * Experience:
-	* Press the arrow keys to move vertically and horizontally. The trigger frequency is different, the game can define the trigger frequency, instead of the original event frequency, the source code:[/src/unit/event.js](https://github.com/chvin/react-tetris/blob/master/src/unit/event.js) ;
+	* Press the arrow keys to move vertically and horizontally. The trigger frequency is different, the game can define the trigger frequency, instead of the original event frequency, the source code:[/src/unit/event.js](https://github.com/binaryify/vue-tetris/blob/master/src/unit/event.js) ;
 	* Left and right to move the delay can drop the speed, but when moving in the wall smaller delay; in the speed of 6 through the delay will ensure a complete horizontal movement in a row;
-	* The `touchstart` and `mousedown` events are also registered for the button for responsive games. When `touchstart` occurs, `mousedown` is not triggered, and when `mousedown` occurs, the `mouseup` simulator `mouseup` will also be listened to as `mouseup`, since the mouse-removed event element can not fire. Source Code:[/src/components/keyboard/index.js](https://github.com/chvin/react-tetris/blob/master/src/components/keyboard/index.js);
+	* The `touchstart` and `mousedown` events are also registered for the button for responsive games. When `touchstart` occurs, `mousedown` is not triggered, and when `mousedown` occurs, the `mouseup` simulator `mouseup` will also be listened to as `mouseup`, since the mouse-removed event element can not fire. Source Code:[/src/components/keyboard/index.js](https://github.com/binaryify/vue-tetris/blob/master/src/components/keyboard/index.js);
 	* The `visibilitychange` event, when the page is hidden\switch, the game will not proceed, switch back and it will continue, the `focus` state has also been written into the Redux. So when playing with the phone and the phone has a `call`, the progress of the game will be saved; PC open the game do not hear any other gameover, which is a bit like `ios` application switch;
 	* In the game `any` time you refresh the page, (such as the closing the tab or the end of the game) can restore the current state;
 	* The only pictures used in the game are ![image](https://img.alicdn.com/tps/TB1qq7kNXXXXXacXFXXXXXXXXXX-400-186.png), all the rest is CSS;
@@ -179,7 +179,7 @@ npm run dev
 The browser will go to [http://localhost:8080](http://localhost:8080)
 
 ### multi-language
-In the [i18n.json](https://github.com/chvin/react-tetris/blob/master/i18n.json) is the configuration for the multi-language environment. You can change the language by passing the url parameter `lan` like this: `https://chvin.github.io/react-tetris/?lan=en`
+In the [i18n.json](https://github.com/Binaryify/vue-tetris/blob/master/src/i18n.json)is the configuration for the multi-language environment. You can change the language by passing the url parameter `lan` like this: `https://Binaryify.github.io/vue-tetris/?lan=en`
 ### Build
 ```
 npm run build
