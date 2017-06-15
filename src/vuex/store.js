@@ -109,7 +109,6 @@ if (startLinesInitState < 0 || startLinesInitState > 10) {
 const resetInitState = lastRecord && lastRecord.reset
   ? !!lastRecord.reset
   : false
-// const resetInitState=false
 const state = {
   music: musicInitState,
   pause: pauseInitState,
@@ -136,12 +135,8 @@ const state = {
     pause: false
   },
 
-  // next: getNextType(),
-  // move_block: '',
   lock: lockInitState,
-  // MUSIC: musicInitState,
   focus: isFocus()
-  // -----分割线-----
 }
 export default new Vuex.Store({
   state,

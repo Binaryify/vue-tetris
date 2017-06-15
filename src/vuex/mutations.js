@@ -49,8 +49,6 @@ const mutations = {
   focus(state, data) {
     state.focus = data
   },
-
-  // -----分割线-----
   key_drop(state, data) {
     state.keyboard['drop'] = data
   },

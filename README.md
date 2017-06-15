@@ -1,3 +1,6 @@
+### English introduction
+Please view [README.md](https://github.com/Binaryify/vue-tetris/blob/master/README-EN.md)
+
 ## 用Vue、Vuex、Immutable做俄罗斯方块
 
 ----
@@ -30,7 +33,7 @@
 Vuex 设计管理了所有应存的状态，这是上面持久化的保证。
 
 ----
-游戏框架使用的是 Vue + Vuex，其中再加入了 Immutable,确保性能和数据可靠性
+游戏框架使用的是 [Vue](https://github.com/vuejs/vue) + [Vuex](https://github.com/vuejs/vuex)，其中再加入了 [Immutable.js](https://facebook.github.io/immutable-js/),确保性能和数据可靠性
 
 
 ## 1、什么是 Immutable？
@@ -153,7 +156,7 @@ Vue 版本和 React 版本核心代码基本相同,但在编写组件的时候�
   }
 ```
 
-5. 在必要时候使用 jsx 和 render 函数,是的, vue 支持 jsx,在这个项目中`matrix 组件` 的功能逻辑较复杂,使用 `template` 模版来渲染组件已经不合适了, React 每次 setState 会触发 'render' 方法,所以我们可以在 methods自定义 'render' 方法再在 state 变化后手动触发 'render' 方法,但是这个方法对有复杂逻辑的组件来说会变得很繁琐,我的解决方法是通过 Vue 的 jsx 转换插件[babel-plugin-transform-vue-jsx](https://github.com/vuejs/babel-plugin-transform-vue-jsx)来使用 jsx 语法对页面进行渲染,当 props 或 state 变化了自动触发 'render' 方法,另外要注意的是 vue 的 jsx 和 React 的 jsx 书写上有一点的差异, 当 'render' 方法存在时,template 语法会失效. 'render' 函数一个比较实用的用处是在开发类似 React-log 之类的不需要渲染 html 只需要执行一些方法的组件时 template 会显得很多余,因为这时候并不需要渲染 dom 了,如果用了 'render' 函数,简单的在 'render' 函数里 return false 就行,如: [react-log](https://github.com/diegomura/react-log/blob/b1bb695a6997cd1be399170186cf6ff1e27393d7/src/Log.js#L33)
+5. 在必要时候使用 jsx 和 'render' 函数,是的, vue 支持 jsx,在这个项目中`matrix 组件` 的功能逻辑较复杂,使用 `template` 模版来渲染组件已经不合适了, React 每次 setState 会触发 'render' 方法,所以我们可以在 methods自定义 'render' 方法再在 state 变化后手动触发 'render' 方法,但是这个方法对有复杂逻辑的组件来说会变得很繁琐,我的解决方法是通过 Vue 的 jsx 转换插件[babel-plugin-transform-vue-jsx](https://github.com/vuejs/babel-plugin-transform-vue-jsx)来使用 jsx 语法对页面进行渲染,当 props 或 state 变化了自动触发 'render' 方法,另外要注意的是 vue 的 jsx 和 React 的 jsx 书写上有一点的差异, 当 'render' 方法存在时,template 语法会失效. 'render' 函数一个比较实用的用处是在开发类似 React-log 之类的不需要渲染 html 只需要执行一些方法的组件时 template 会显得很多余,因为这时候并不需要渲染 dom 了,如果用了 'render' 函数,简单的在 'render' 函数里 return false 就行,如: [react-log](https://github.com/diegomura/react-log/blob/b1bb695a6997cd1be399170186cf6ff1e27393d7/src/Log.js#L33)
 
 ## 5、架构差异
 Redux 的数据流向是通过 `mapStateToProps` 把 store 的状态转化为 props 然后通过`connect` 函数注入到 根组件,根组件再把这些 props 传入不同组件,当 store 的状态变化,根组件会重新 render, 更新子组件上的 props,子组件再 根据新 props重新 render
@@ -179,7 +182,7 @@ npm install
 ```
 npm run dev
 ```
-浏览自动打开 [localhost:8080](localhost:8080)
+浏览自动打开 [http://localhost:8080](http://localhost:8080)
 
 ### 多语言
 在 [i18n.json](https://github.com/Binaryify/vue-tetris/blob/master/src/i18n.json) 配置多语言环境，使用"lan"参数匹配语言如：`https://Binaryify.github.io/vue-tetris/?lan=en`

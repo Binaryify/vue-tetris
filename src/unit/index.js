@@ -61,7 +61,6 @@ const unit = {
   },
   isOver(matrix) {
     // 游戏是否结束, 第一行落下方块为依据
-    // console.log(matrix)
     if (List.isList(matrix)) {
       matrix = matrix.toJS()
     }
