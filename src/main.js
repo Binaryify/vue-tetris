@@ -10,7 +10,6 @@ import { subscribeRecord } from './unit';
 window.store=store
 subscribeRecord(store); // 将更新的状态记录到localStorage
 Vue.config.productionTip = false
-window.vm=store
 /* eslint-disable no-new */
 new Vue({
   el: '#root',
