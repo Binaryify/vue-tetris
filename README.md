@@ -28,6 +28,8 @@ Please view [README.md](https://github.com/Binaryify/vue-tetris/blob/master/READ
 玩单机游戏最怕什么？断电。通过订阅 `store.subscribe`，将state储存在localStorage，精确记录所有状态。网页关了刷新了、程序崩溃了、手机没电了，重新打开连接，都可以继续。
 
 ### Vuex 状态预览（[Vue DevTools extension](https://github.com/vuejs/vue-devtools)）
+![preview](http://7xkm8j.com1.z0.glb.clouddn.com/vuex.gif)
+
 [视频](http://7xkm8j.com1.z0.glb.clouddn.com/vuex.mp4)
 
 Vuex 设计管理了所有应存的状态，这是上面持久化的保证。

@@ -21,6 +21,8 @@ Not only refers to the screen adaptation, `but the change of input depending on 
 What's the worst can happen when you're playing stand-alone games? Power outage. The state is stored in the `localStorage` by subscribing to `store.subscribe`, which records exactly all the state. Web page refreshes, the program crashes, the phone is dead, just re-open the connection and you can continue playing.
 
 ### Vuex state preview ([Vue DevTools extension](https://github.com/vuejs/vue-devtools))
+![preview](http://7xkm8j.com1.z0.glb.clouddn.com/vuex.gif)
+
 [video](https://www.youtube.com/watch?v=iuoSSTqSAUE)
 
 Vuex manages all the state that should be stored, which is a guarantee to be persisted as mentioned above.
