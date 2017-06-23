@@ -9,13 +9,6 @@ import { hasWebAudioAPI } from '../unit/music'
 const { fromJS, List } = require('immutable')
 Vue.use(Vuex)
 
-let ttt = lastRecord && !isNaN(parseInt(lastRecord.speedRun, 10))
-  ? parseInt(lastRecord.speedRun, 10)
-  : 1
-if (ttt < 1 || ttt > 6) {
-  ttt = 1
-}
-
 let clearLinesInitState = lastRecord &&
   !isNaN(parseInt(lastRecord.clearLines, 10))
   ? parseInt(lastRecord.clearLines, 10)
