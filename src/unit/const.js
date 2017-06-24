@@ -88,6 +88,9 @@ export const getParam = param => {
 
 export const lan = (() => {
   let l = getParam('lan').toLowerCase()
+  if (!l && navigator.languages) {
+    l = navigator.languages.find(l => i18nJSON.lan.indexOf(l) !== -1)
+  }
   l = i18nJSON.lan.indexOf(l) === -1 ? i18nJSON.default : l
   return l
 })()
