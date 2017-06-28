@@ -3,7 +3,7 @@
 
 ----
 ## Use Vue, Vuex, Immutable to code Tetris.
-Inspired by [react-tetris]((https://github.com/chvin/react-tetris), cause I prefer Vue to React, so I use Vue to code it, my idea is to think of components and methods as functions, to ensure that an input (props/params) gets a determined output (view/return value), and use Vuex instead of Redux.
+Inspired by [react-tetris](https://github.com/chvin/react-tetris), cause I prefer Vue to React, so I use Vue to code it, my idea is to think of components and methods as functions, to ensure that an input (props/params) gets a determined output (view/return value), and use Vuex instead of Redux.
 
 Open [http://binaryify.github.io/vue-tetris/](http://binaryify.github.io/vue-tetris/)  to play!
 
