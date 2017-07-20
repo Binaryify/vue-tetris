@@ -14,14 +14,6 @@ import { transform, lastRecord, speeds, i18n, lan } from './unit/const'
 import { visibilityChangeEvent, isFocus } from './unit/'
 import states from './control/states'
 export default {
-  watch: {
-    w() {
-      this.render()
-    },
-    h() {
-      this.render()
-    }
-  },
   mounted() {
     this.render()
     window.addEventListener('resize', this.resize.bind(this), true)
