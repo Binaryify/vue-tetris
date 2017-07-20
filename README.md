@@ -189,6 +189,7 @@ npm run dev
 ### 多语言
 在 [i18n.json](https://github.com/Binaryify/vue-tetris/blob/master/src/i18n.json) 配置多语言环境，使用"lan"参数匹配语言如：`https://Binaryify.github.io/vue-tetris/?lan=en`
 
+`http://binaryify.github.io/vue-tetris/?lan=zh`
 ### 打包编译
 ```
 npm run build

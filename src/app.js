@@ -112,9 +112,10 @@ export default {
           const speedRun = this.$store.state.speedRun
           let timeout = speeds[speedRun - 1] / 2 // 继续时, 给予当前下落速度一半的停留时间
           // 停留时间不小于最快速的速度
-          timeout = speedRun < speeds[speeds.length - 1]
-            ? speeds[speeds.length - 1]
-            : speedRun
+          timeout =
+            speedRun < speeds[speeds.length - 1]
+              ? speeds[speeds.length - 1]
+              : speedRun
           states.auto(timeout)
         }
 

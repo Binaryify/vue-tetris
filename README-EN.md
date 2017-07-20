@@ -182,6 +182,8 @@ The browser will go to [http://localhost:8080](http://localhost:8080)
 
 ### multi-language
 In the [i18n.json](https://github.com/Binaryify/vue-tetris/blob/master/src/i18n.json)is the configuration for the multi-language environment. You can change the language by passing the url parameter `lan` like this: `https://Binaryify.github.io/vue-tetris/?lan=en`
+
+`http://binaryify.github.io/vue-tetris/?lan=zh`
 ### Build
 ```
 npm run build
