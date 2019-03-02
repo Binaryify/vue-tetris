@@ -44,7 +44,17 @@ export default {
       },
       true
     )
+    document.addEventListener('touchend', (e) => {
+      if (e.preventDefault) {
+        e.preventDefault();
+      }
+    }, true);
 
+    // 阻止双指放大
+    document.addEventListener('gesturestart', (event) => {
+      event.preventDefault();
+    });
+    
     document.addEventListener(
       'mousedown',
       e => {
