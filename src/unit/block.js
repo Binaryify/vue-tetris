@@ -1,4 +1,3 @@
-import { List, fromJS } from 'immutable'
 import { blockShape, origin } from './const'
 
 class Block {
@@ -54,16 +53,18 @@ class Block {
     }
   }
   rotate() {
-    const shape = fromJS(this.shape)
-    let result = List([])
+    const shape = this.shape
+    let result = []
     shape.forEach(m =>
       m.forEach((n, k) => {
-        const index = m.size - k - 1
-        if (result.get(index) === undefined) {
-          result = result.set(index, List([]))
+        const index = m.length - k - 1
+        if (result[index] === undefined) {
+          result[index]=[]
         }
-        const tempK = result.get(index).push(n)
-        result = result.set(index, tempK)
+        
+        result[index].push(n)
+        const tempK = JSON.parse(JSON.stringify(result[index]))
+        result[index]=tempK
       })
     )
     const nextXy = [
@@ -74,7 +75,7 @@ class Block {
       ? 0
       : this.rotateIndex + 1
     return {
-      shape: result.toJS(),
+      shape: result,
       type: this.type,
       xy: nextXy,
       rotateIndex: nextRotateIndex,

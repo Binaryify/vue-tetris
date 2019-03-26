@@ -2,7 +2,6 @@ import { want } from '../../unit/'
 import event from '../../unit/event'
 import states from '../states'
 import { music } from '../../unit/music'
-import { fromJS, List } from 'immutable'
 const down = store => {
   store.commit('key_drop', true)
   event.down({
@@ -29,7 +28,7 @@ const down = store => {
           bottom = cur.fall(index)
           index++
         }
-        let matrix = fromJS(state.matrix)
+        let matrix =JSON.parse(JSON.stringify( state.matrix))
         bottom = cur.fall(index - 2)
         store.commit('moveBlock', bottom)
         const shape = bottom.shape
@@ -38,9 +37,9 @@ const down = store => {
           m.forEach((n, k2) => {
             if (n && xy[0] + k1 >= 0) {
               // 竖坐标可以为负
-              let line = matrix.get(xy[0] + k1)
-              line = line.set(xy[1] + k2, 1)
-              matrix = matrix.set(xy[0] + k1, line)
+              let line = matrix[xy[0] + k1]
+              line[xy[1] + k2]=1
+              matrix[xy[0] + k1]=line
             }
           })
         )

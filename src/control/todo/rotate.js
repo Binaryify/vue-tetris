@@ -5,6 +5,7 @@ import { music } from '../../unit/music'
 const down = store => {
   store.commit('key_rotate', true)
   if (store.state.cur !== null) {
+    console.log("rotate")
     event.down({
       key: 'rotate',
       once: true,

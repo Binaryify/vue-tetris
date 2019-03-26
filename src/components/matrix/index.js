@@ -1,4 +1,3 @@
-import { List, fromJS } from 'immutable'
 import { isClear } from '../../unit/'
 import { fillLine, blankLine } from '../../unit/const'
 import states from '../../control/states'
@@ -20,7 +19,7 @@ export default {
     } else {
       matrix = this.getResult()
     }
-    matrix = matrix.toJS()
+   
     return (
       <div class="matrix">
         {matrix.map((p, k1) =>
@@ -62,43 +61,41 @@ export default {
       }
       const cur = props.cur
       const shape = cur && cur.shape
-      const xy = fromJS(cur && cur.xy)
-      let matrix = fromJS(props.propMatrix)
+      const xy = cur && cur.xy
+      let matrix = JSON.parse(JSON.stringify(props.propMatrix))
       const clearLines = this.clearLines
       if (clearLines) {
         const animateColor = this.animateColor
         clearLines.forEach(index => {
-          matrix = matrix.set(
-            index,
-            List([
-              animateColor,
-              animateColor,
-              animateColor,
-              animateColor,
-              animateColor,
-              animateColor,
-              animateColor,
-              animateColor,
-              animateColor,
-              animateColor
-            ])
-          )
+          matrix[index]=[
+            animateColor,
+            animateColor,
+            animateColor,
+            animateColor,
+            animateColor,
+            animateColor,
+            animateColor,
+            animateColor,
+            animateColor,
+            animateColor
+          ]
+         
         })
       } else if (shape) {
         shape.forEach((m, k1) =>
           m.forEach((n, k2) => {
-            if (n && xy.get(0) + k1 >= 0) {
+            if (n && xy[0] + k1 >= 0) {
               // 竖坐标可以为负
-              let line = matrix.get(xy.get(0) + k1)
+              let line = matrix[xy[0]+k1]
               let color
-              if (line.get(xy.get(1) + k2) === 1 && !clearLines) {
+              if (line[xy[1] + k2] === 1 && !clearLines) {
                 // 矩阵与方块重合
                 color = 2
               } else {
                 color = 1
               }
-              line = line.set(xy.get(1) + k2, color)
-              matrix = matrix.set(xy.get(0) + k1, line)
+              line[xy[1] + k2]=color
+              matrix[xy[0] + k1]=line
             }
           })
         )
@@ -129,17 +126,19 @@ export default {
     },
     over(nextProps) {
       let overState = this.getResult(nextProps)
-      this.overState = overState
+      
+      this.overState = JSON.parse(JSON.stringify(overState))
       const exLine = index => {
         if (index <= 19) {
-          overState = overState.set(19 - index, List(fillLine))
+          overState[19 - index]=fillLine
         } else if (index >= 20 && index <= 39) {
-          overState = overState.set(index - 20, List(blankLine))
+          overState[index - 20]=blankLine
         } else {
           states.overEnd()
           return
         }
-        this.overState = overState
+        this.overState = JSON.parse(JSON.stringify(overState))
+        // console.log(JSON.stringify(overState))
       }
 
       for (let i = 0; i <= 40; i++) {

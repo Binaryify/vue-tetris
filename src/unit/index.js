@@ -1,5 +1,4 @@
 import { blockType, StorageKey } from './const'
-import { fromJS, List } from 'immutable'
 const hiddenProperty = (() => {
   // document[hiddenProperty] 可以判断页面是否失焦
   let names = ['hidden', 'webkitHidden', 'mozHidden', 'msHidden']
@@ -13,11 +12,10 @@ const unit = {
     return blockType[Math.floor(Math.random() * len)]
   },
   want(next, matrix) {
-    matrix = fromJS(matrix)
     // 方块是否能移到到指定位置
     const xy = next.xy
-    const shape = fromJS(next.shape)
-    const horizontal = shape.get(0).size
+    const shape = next.shape
+    const horizontal = shape[0].length
     return shape.every((m, k1) =>
       m.every((n, k2) => {
         if (xy[1] < 0) {
@@ -37,7 +35,7 @@ const unit = {
           return false
         }
         if (n) {
-          if (matrix.get(xy[0] + k1).get(xy[1] + k2)) {
+          if (matrix[xy[0] + k1][xy[1] + k2]) {
             return false
           }
           return true
@@ -61,9 +59,7 @@ const unit = {
   },
   isOver(matrix) {
     // 游戏是否结束, 第一行落下方块为依据
-    if (List.isList(matrix)) {
-      matrix = matrix.toJS()
-    }
+  
     return matrix[0].some(n => !!n)
   },
   subscribeRecord(store) {

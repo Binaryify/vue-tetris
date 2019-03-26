@@ -7,7 +7,6 @@ import {
   clearPoints,
   eachLines
 } from '../unit/const'
-const { fromJS, List } = require('immutable')
 import { music } from '../unit/music'
 
 const getStartMatrix = startLines => {
@@ -26,27 +25,27 @@ const getStartMatrix = startLines => {
       line.splice(index, 0, 0)
     }
 
-    return List(line)
+    return line
   }
-  let startMatrix = List([])
+  let startMatrix = []
 
   for (let i = 0; i < startLines; i++) {
     if (i <= 2) {
       // 0-3
-      startMatrix = startMatrix.push(getLine(5, 8))
+      startMatrix.push(getLine(5, 8))
     } else if (i <= 6) {
       // 4-6
-      startMatrix = startMatrix.push(getLine(4, 9))
+      startMatrix.push(getLine(4, 9))
     } else {
       // 7-9
-      startMatrix = startMatrix.push(getLine(3, 9))
+      startMatrix.push(getLine(3, 9))
     }
   }
   for (let i = 0, len = 20 - startLines; i < len; i++) {
     // 插入上部分的灰色
-    startMatrix = startMatrix.unshift(List(blankLine))
+    startMatrix.unshift(blankLine)
   }
-  return startMatrix.toJS()
+  return startMatrix
 }
 
 const states = {
@@ -82,16 +81,16 @@ const states = {
         store.commit('moveBlock', next)
         states.fallInterval = setTimeout(fall, speeds[state.speedRun - 1])
       } else {
-        let matrix = fromJS(state.matrix)
+        let matrix = JSON.parse(JSON.stringify(state.matrix))
         const shape = cur && cur.shape
-        const xy = fromJS(cur && cur.xy)
+        const xy = cur && cur.xy
         shape.forEach((m, k1) =>
           m.forEach((n, k2) => {
-            if (n && xy.get(0) + k1 >= 0) {
+            if (n && xy[0] + k1 >= 0) {
               // 竖坐标可以为负
-              let line = matrix.get(xy.get(0) + k1)
-              line = line.set(xy.get(1) + k2, 1)
-              matrix = matrix.set(xy.get(0) + k1, line)
+              let line = matrix[xy[0] + k1]
+              line[xy[1] + k2]=1
+              matrix[xy[0] + k1]=line
             }
           })
         )
@@ -165,12 +164,13 @@ const states = {
   // 消除行
   clearLines: (matrix, lines) => {
     const state = store.state
-    let newMatrix = fromJS(matrix)
+    let newMatrix = JSON.parse(JSON.stringify(matrix))
     lines.forEach(n => {
-      newMatrix = newMatrix.splice(n, 1)
-      newMatrix = newMatrix.unshift(List(blankLine))
+      newMatrix.splice(n, 1)
+      // newMatrix = newMatrix.unshift(List(blankLine))
+       newMatrix.unshift(blankLine)
     })
-    store.commit('matrix', newMatrix.toJS())
+    store.commit('matrix', newMatrix)
     store.commit('moveBlock', { type: state.next })
     store.commit('nextBlock', '')
     states.auto()
