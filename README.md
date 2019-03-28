@@ -1,7 +1,7 @@
 ### English introduction
 Please view [README.md](https://github.com/Binaryify/vue-tetris/blob/master/README-EN.md)
 
-## 用Vue、Vuex、Immutable做俄罗斯方块
+## 用Vue、Vuex 做俄罗斯方块
 
 ----
 本项目灵感来源于 React 版的[俄罗斯方块](https://github.com/chvin/react-tetris),由于对其实现原理较感兴趣,而且相比于 React 更喜欢 Vue, 于是把 React 版的重构为了 Vue 版的,大致思路是把组件当成一个个函数,保证一个输入(props)能得到一个确定的输出(view),然后对不同方法也是做同样处理,对于 Redux 使用 Vuex 精简化
@@ -35,69 +35,13 @@ Please view [README.md](https://github.com/Binaryify/vue-tetris/blob/master/READ
 Vuex 设计管理了所有应存的状态，这是上面持久化的保证。
 
 ----
-游戏框架使用的是 [Vue](https://github.com/vuejs/vue) + [Vuex](https://github.com/vuejs/vuex)，其中再加入了 [Immutable.js](https://facebook.github.io/immutable-js/),确保性能和数据可靠性
+游戏框架使用的是 [Vue](https://github.com/vuejs/vue) + [Vuex](https://github.com/vuejs/vuex)
 
 
-## 1、什么是 Immutable？
-Immutable 是一旦创建，就不能再被更改的数据。对 Immutable 对象的任何修改或添加删除操作都会返回一个新的 Immutable 对象。
-
-### 初识：
-让我们看下面一段代码：
-``` JavaScript
-function keyLog(touchFn) {
-  let data = { key: 'value' };
-  f(data);
-  console.log(data.key); // 猜猜会打印什么？
-}
-```
-不查看f，不知道它对 `data` 做了什么，无法确认会打印什么。但如果 `data` 是 Immutable，你可以确定打印的是 `value`：
-``` JavaScript
-function keyLog(touchFn) {
-  let data = Immutable.Map({ key: 'value' });
-  f(data);
-  console.log(data.get('key'));  // value
-}
-```
-
-JavaScript 中的`Object`与`Array`等使用的是引用赋值，新的对象简单的引用了原始对象，改变新也将影响旧的：
-``` JavaScript
-foo = {a: 1};  bar = foo;  bar.a = 2;
-foo.a // 2
-```
-虽然这样做可以节约内存，但当应用复杂后，造成了状态不可控，是很大的隐患，节约的内存优点变得得不偿失。
-
-Immutable则不一样，相应的：
-``` JavaScript
-foo = Immutable.Map({ a: 1 });  bar = foo.set('a', 2);
-foo.get('a') // 1
-```
-
-### 关于 “===”：
-我们知道对于`Object`与`Array`的`===`比较，是对引用地址的比较而不是“值比较”，如：
-``` JavaScript
-{a:1, b:2, c:3} === {a:1, b:2, c:3}; // false
-[1, 2, [3, 4]] === [1, 2, [3, 4]]; // false
-```
-对于上面只能采用 `deepCopy`、`deepCompare`来遍历比较，不仅麻烦且好性能。
-
-我们感受来一下`Immutable`的做法！
-``` JavaScript
-map1 = Immutable.Map({a:1, b:2, c:3});
-map2 = Immutable.Map({a:1, b:2, c:3});
-Immutable.is(map1, map2); // true
-
-// List1 = Immutable.List([1, 2, Immutable.List[3, 4]]);
-List1 = Immutable.fromJS([1, 2, [3, 4]]);
-List2 = Immutable.fromJS([1, 2, [3, 4]]);
-Immutable.is(List1, List2); // true
-```
 
 
-Immutable学习资料：
-* [Immutable.js](http://facebook.github.io/immutable-js/)
 
-
-## 2、Web Audio Api
+## 1、Web Audio Api
 游戏里有很多不同的音效，而实际上只引用了一个音效文件：[/build/music.mp3](https://github.com/Binaryify/vue-tetris/blob/master/build/music.mp3)。借助`Web Audio Api`能够以毫秒级精确、高频率的播放音效，这是`<audio>`标签所做不到的。在游戏进行中按住方向键移动方块，便可以听到高频率的音效。
 
 ![网页音效进阶](https://img.alicdn.com/tps/TB1fYgzNXXXXXXnXpXXXXXXXXXX-633-358.png)
@@ -140,13 +84,11 @@ Web Audio Api 学习资料：
 ## 4、开发中的经验梳理,以及如何把 React 项目重构为 Vue 版本
 Vue 版本和 React 版本核心代码基本相同,但在编写组件的时候遇到了几个问题,比如:
 
-1. React 版的 store  使用了 immutable 结构的数据,vuex 上的 store 如果使用了 immutable 结构,不利用监听数据变化,故把store 的数据全部使用了普通的数据,在需要这些数据的地方通过 immutable 提供的 `fromJS` 转换,在需要普通数据的地方再通过 immutable 的 `toJS` 转换成普通数据,在实际重构过程中,我尽量避开了核心游戏实现逻辑,实际上我是在没弄懂游戏实现逻辑的情况下完成重构的,只是保证了方法的输入和输出的一致性,要做的只是耐心  
+1. 如何把 React 组件改写成 Vue 的,我的思路是把组件当成函数,保证一个输入(props)能得到一个确定的输出(view),然后对不同方法也是做同样处理, React 的 setState 会触发 render 方法,所以可以在 methods 自定义 render 方法再在 state 变化后手动触发 render 方法
 
-2. 如何把 React 组件改写成 Vue 的,我的思路是把组件当成函数,保证一个输入(props)能得到一个确定的输出(view),然后对不同方法也是做同样处理, React 的 setState 会触发 render 方法,所以可以在 methods 自定义 render 方法再在 state 变化后手动触发 render 方法
+2. 生命周期,简单来说, React 的 `componentWillMount` 对应 Vue 的 `beforeMount`, React 的 `componentDidMount` 对应 Vue 的 `mounted`,React 的用来优化性能的 `shouldComponentUpdate` 在 Vue 里并不需要,不需要手动优化这也是我喜欢 Vue 的一点
 
-3. 生命周期,简单来说, React 的 `componentWillMount` 对应 Vue 的 `beforeMount`, React 的 `componentDidMount` 对应 Vue 的 `mounted`,React 的用来优化性能的 `shouldComponentUpdate` 在 Vue 里并不需要,不需要手动优化这也是我喜欢 Vue 的一点
-
-4. Vue 没有 React 的`componentWillReceiveProps` 的生命周期,我的解决方法是使用 watch 配合 `deep:true` 来监听 props 的变化,如:
+3. Vue 没有 React 的`componentWillReceiveProps` 的生命周期,我的解决方法是使用 watch 配合 `deep:true` 来监听 props 的变化,如:
 ```js
   watch: {
     $props: {
@@ -158,7 +100,7 @@ Vue 版本和 React 版本核心代码基本相同,但在编写组件的时候�
   }
 ```
 
-5. 在必要时候使用 jsx 和 'render' 函数,是的, vue 支持 jsx,在这个项目中`matrix 组件` 的功能逻辑较复杂,使用 `template` 模版来渲染组件已经不合适了, React 每次 setState 会触发 'render' 方法,所以我们可以在 methods自定义 'render' 方法再在 state 变化后手动触发 'render' 方法,但是这个方法对有复杂逻辑的组件来说会变得很繁琐,我的解决方法是通过 Vue 的 jsx 转换插件[babel-plugin-transform-vue-jsx](https://github.com/vuejs/babel-plugin-transform-vue-jsx)来使用 jsx 语法对页面进行渲染,当 props 或 state 变化了自动触发 'render' 方法,另外要注意的是 vue 的 jsx 和 React 的 jsx 书写上有一点的差异, 当 'render' 方法存在时,template 语法会失效. 'render' 函数一个比较实用的用处是在开发类似 React-log 之类的不需要渲染 html 只需要执行一些方法的组件时 template 会显得很多余,因为这时候并不需要渲染 dom 了,如果用了 'render' 函数,简单的在 'render' 函数里 return false 就行,如: [react-log](https://github.com/diegomura/react-log/blob/b1bb695a6997cd1be399170186cf6ff1e27393d7/src/Log.js#L33)
+4. 在必要时候使用 jsx 和 'render' 函数,是的, vue 支持 jsx,在这个项目中`matrix 组件` 的功能逻辑较复杂,使用 `template` 模版来渲染组件已经不合适了, React 每次 setState 会触发 'render' 方法,所以我们可以在 methods自定义 'render' 方法再在 state 变化后手动触发 'render' 方法,但是这个方法对有复杂逻辑的组件来说会变得很繁琐,我的解决方法是通过 Vue 的 jsx 转换插件[babel-plugin-transform-vue-jsx](https://github.com/vuejs/babel-plugin-transform-vue-jsx)来使用 jsx 语法对页面进行渲染,当 props 或 state 变化了自动触发 'render' 方法,另外要注意的是 vue 的 jsx 和 React 的 jsx 书写上有一点的差异, 当 'render' 方法存在时,template 语法会失效. 'render' 函数一个比较实用的用处是在开发类似 React-log 之类的不需要渲染 html 只需要执行一些方法的组件时 template 会显得很多余,因为这时候并不需要渲染 dom 了,如果用了 'render' 函数,简单的在 'render' 函数里 return false 就行,如: [react-log](https://github.com/diegomura/react-log/blob/b1bb695a6997cd1be399170186cf6ff1e27393d7/src/Log.js#L33)
 
 ## 5、架构差异
 Redux 的数据流向是通过 `mapStateToProps` 把 store 的状态转化为 props 然后通过`connect` 函数注入到 根组件,根组件再把这些 props 传入不同组件,当 store 的状态变化,根组件会重新 render, 更新子组件上的 props,子组件再 根据新 props重新 render

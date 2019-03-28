@@ -1,68 +1,68 @@
-import { want } from '../../unit/'
-import event from '../../unit/event'
-import states from '../states'
-import { music } from '../../unit/music'
+import { want } from "../../unit/";
+import event from "../../unit/event";
+import states from "../states";
+import { music } from "../../unit/music";
 const down = store => {
-  store.commit('key_drop', true)
+  store.commit("key_drop", true);
   event.down({
-    key: 'space',
+    key: "space",
     once: true,
     callback: () => {
-      const state = store.state
+      const state = store.state;
       if (state.lock) {
-        return
+        return;
       }
-      const cur = state.cur
+      const cur = state.cur;
       if (cur !== null) {
         // 置底
         if (state.pause) {
-          states.pause(false)
-          return
+          states.pause(false);
+          return;
         }
         if (music.fall) {
-          music.fall()
+          music.fall();
         }
-        let index = 0
-        let bottom = cur.fall(index)
+        let index = 0;
+        let bottom = cur.fall(index);
         while (want(bottom, state.matrix)) {
-          bottom = cur.fall(index)
-          index++
+          bottom = cur.fall(index);
+          index++;
         }
-        let matrix =JSON.parse(JSON.stringify( state.matrix))
-        bottom = cur.fall(index - 2)
-        store.commit('moveBlock', bottom)
-        const shape = bottom.shape
-        const xy = bottom.xy
+        let matrix = JSON.parse(JSON.stringify(state.matrix));
+        bottom = cur.fall(index - 2);
+        store.commit("moveBlock", bottom);
+        const shape = bottom.shape;
+        const xy = bottom.xy;
         shape.forEach((m, k1) =>
           m.forEach((n, k2) => {
             if (n && xy[0] + k1 >= 0) {
               // 竖坐标可以为负
-              let line = matrix[xy[0] + k1]
-              line[xy[1] + k2]=1
-              matrix[xy[0] + k1]=line
+              let line = matrix[xy[0] + k1];
+              line[xy[1] + k2] = 1;
+              matrix[xy[0] + k1] = line;
             }
           })
-        )
-        store.commit('drop', true)
+        );
+        store.commit("drop", true);
         setTimeout(() => {
-          store.commit('drop', false)
-        }, 100)
-        states.nextAround(matrix)
+          store.commit("drop", false);
+        }, 100);
+        states.nextAround(matrix);
       } else {
-        states.start()
+        states.start();
       }
     }
-  })
-}
+  });
+};
 
 const up = store => {
-  store.commit('key_drop', false)
+  store.commit("key_drop", false);
   event.up({
-    key: 'space'
-  })
-}
+    key: "space"
+  });
+};
 
 export default {
   down,
   up
-}
+};

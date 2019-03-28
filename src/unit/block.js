@@ -63,7 +63,7 @@ class Block {
         }
         
         result[index].push(n)
-        const tempK = JSON.parse(JSON.stringify(result[index]))
+        const tempK = [...result[index]]
         result[index]=tempK
       })
     )

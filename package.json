@@ -1,6 +1,6 @@
 {
   "name": "vue-tetris",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "A Vue.js project",
   "author": "binaryify <zhuangtongfa@qq.com>",
   "private": true,
@@ -10,7 +10,6 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "immutable": "^3.8.1",
     "vue": "^2.3.3",
     "vuex": "^2.3.1"
   },

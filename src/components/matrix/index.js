@@ -127,7 +127,7 @@ export default {
     over(nextProps) {
       let overState = this.getResult(nextProps)
       
-      this.overState = JSON.parse(JSON.stringify(overState))
+      this.overState = [...overState]
       const exLine = index => {
         if (index <= 19) {
           overState[19 - index]=fillLine
@@ -137,7 +137,7 @@ export default {
           states.overEnd()
           return
         }
-        this.overState = JSON.parse(JSON.stringify(overState))
+        this.overState = [...overState]
         // console.log(JSON.stringify(overState))
       }
 

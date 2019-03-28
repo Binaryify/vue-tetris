@@ -2,7 +2,7 @@
 请查看 [README.md](https://github.com/binaryify/vue-tetris/blob/master/README.md)
 
 ----
-## Use Vue, Vuex, Immutable to code Tetris.
+## Use Vue, Vuex to code Tetris.
 Inspired by [react-tetris](https://github.com/chvin/react-tetris), cause I prefer Vue to React, so I use Vue to code it, my idea is to think of components and methods as functions, to ensure that an input (props/params) gets a determined output (view/return value), and use Vuex instead of Redux.
 
 Open [http://binaryify.github.io/vue-tetris/](http://binaryify.github.io/vue-tetris/)  to play!
@@ -28,67 +28,13 @@ What's the worst can happen when you're playing stand-alone games? Power outage.
 Vuex manages all the state that should be stored, which is a guarantee to be persisted as mentioned above.
 
 ----
-The Game framework is the use of [Vue](https://github.com/vuejs/vue) + [Vuex](https://github.com/vuejs/vuex), together with [Immutable.js](https://facebook.github.io/immutable-js/).
+The Game framework is the use of [Vue](https://github.com/vuejs/vue) + [Vuex](https://github.com/vuejs/vuex)
 
-## 1. What is Immutable.js?
-Immutable is data that can not be changed once it is created. Any modification or addition to or deletion of an Immutable object returns a new Immutable object.
+
 
 ### Acquaintance：
-Let's look at the following code:
-``` JavaScript
-function keyLog(touchFn) {
-  let data = { key: 'value' };
-  f(data);
-  console.log(data.key); // Guess what will be printed?
-}
-```
-If we do not look at `f`, and do not know what it did to `data`, we can not confirm what will be printed. But if `data` is *Immutable*, you can be sure that `data` haven't changed and `value` is printed:
-``` JavaScript
-function keyLog(touchFn) {
-  let data = Immutable.Map({ key: 'value' });
-  f(data);
-  console.log(data.get('key'));  // value
-}
-```
 
-JavaScript uses a reference assignment, meaning that the new object simply refers to the original object, changing the new will also affect the old:
-``` JavaScript
-foo = {a: 1};  bar = foo;  bar.a = 2;
-foo.a // 2
-```
-Although this can save memory, when the application is complex, it can result in the state not being controllable, posing a big risk. The advantages of saving memory, in this case, become more harm than good.
-
-With Immutable.js the same doesn't happen:
-``` JavaScript
-foo = Immutable.Map({ a: 1 });  bar = foo.set('a', 2);
-foo.get('a') // 1
-```
-
-### About “===”：
-We know that ```===``` operator for the `Object` and `Array` compares the reference to the address of the object rather than its "value comparison", such as:
-``` JavaScript
-{a:1, b:2, c:3} === {a:1, b:2, c:3}; // false
-[1, 2, [3, 4]] === [1, 2, [3, 4]]; // false
-```
-
-To achieve the above we could only `deepCopy` and `deepCompare` to traverse the objects, but this is not only cumbersome it also harms performance.
-
-Let's check `Immutable.js` approach!
-``` JavaScript
-map1 = Immutable.Map({a:1, b:2, c:3});
-map2 = Immutable.Map({a:1, b:2, c:3});
-Immutable.is(map1, map2); // true
-
-// List1 = Immutable.List([1, 2, Immutable.List[3, 4]]);
-List1 = Immutable.fromJS([1, 2, [3, 4]]);
-List2 = Immutable.fromJS([1, 2, [3, 4]]);
-Immutable.is(List1, List2); // true
-```
-
-Immutable learning materials:
-* [Immutable.js](http://facebook.github.io/immutable-js/)
-
-## 2. Web Audio Api
+## 1. Web Audio Api
 There are many different sound effects in the game, but in fact we keep only a reference to a sound file: [/build/music.mp3](https://github.com/binaryify/vue-tetris/blob/master/build/music.mp3). With the help of `Web Audio Api`, you can play audio in millisecond precision, with a high frequency, which is not possible with the `<audio>` tag. Press the arrow keys to move the box while the game is in progress, you can hear high-frequency sound.
 
 ![Web audio advanced](https://img.alicdn.com/tps/TB1fYgzNXXXXXXnXpXXXXXXXXXX-633-358.png)
@@ -133,13 +79,11 @@ Web Audio Api learning materials:
 ## 4. Experience in Development
 The Vue version and the React version of the core code are essentially the same, but there are a few problems when writing components, such as:
 
-1. React version store uses the immutable data structure, the store on the vuex if you use the immutable structure, not use to monitor data changes, so all the data in the store to use the common data, in the place where need these data provided by immutable fromJS conversion, where need common data is converted to common data, through the immutable toJS in the process of actual refactoring, I try to stay away from the core game logic, actually I didn't understand the game implementation logic is in the reconstruction of the complete, just ensure the consistency of input and output method, just be patience
+1. How to rewrite the React components into the Vue, my train of thought is to put the components as a function, ensure that an input (props) can get a certain output (view), and then do the same with different methods is also, React setState would trigger the render method, so can be defined in the methods from the render method to manually trigger the render method after the state change
 
-2. How to rewrite the React components into the Vue, my train of thought is to put the components as a function, ensure that an input (props) can get a certain output (view), and then do the same with different methods is also, React setState would trigger the render method, so can be defined in the methods from the render method to manually trigger the render method after the state change
+2. Life cycle, in simple terms, the React of corresponding Vue componentWillMount beforeMount, React componentDidMount corresponding Vue mounted, React to optimize the performance of shouldComponentUpdate in Vue does not need, does not need manual optimization is one of the reason that I like the Vue 
 
-3. Life cycle, in simple terms, the React of corresponding Vue componentWillMount beforeMount, React componentDidMount corresponding Vue mounted, React to optimize the performance of shouldComponentUpdate in Vue does not need, does not need manual optimization is one of the reason that I like the Vue 
-
-4. Vue does not have the React component of componentWillReceiveProps' life cycle, and my solution is to use watch to work with deep: true to listen for changes in props such as:
+3. Vue does not have the React component of componentWillReceiveProps' life cycle, and my solution is to use watch to work with deep: true to listen for changes in props such as:
 ```js
   watch: {
     $props: {
@@ -151,7 +95,7 @@ The Vue version and the React version of the core code are essentially the same,
   }
 ```
 
-5. Usx jsx and 'render' functions when necessary, yes, Vue support jsx, in this project, matrix component logic is more complex, the use of template template to render components has been inappropriate, React each setState will trigger 'render' method, so we can customize the 'render' method in the methods customizing the 'render' method after the state changes, but this method will become cumbersome for components with complex logic, and my solution is through the Vue jsx conversion Plugin [babel-plugin-transform-vue-jsx](https://github.com/vuejs/babel-plugin-transform-vue-jsx) to use the jsx syntax to render the page, when the props or state changes automatically trigger 'render' method, the other to note that the Vue jsx and React jsx write a little difference , the template syntax will be invalidated when the 'render' method exists. The 'render' function is a useful utility in developing a file like a [React-log](https://github.com/diegomura/react-log) that does not need to render html only need to execute some methods. , Because this time does not need to render dom, and if the 'render' function, simply in the 'render' function in the return False on the line, such as: [React-log](https://github.com/diegomura/react-log/blob/b1bb695a6997cd1be399170186cf6ff1e27393d7/src/Log.js#L33)
+4. Usx jsx and 'render' functions when necessary, yes, Vue support jsx, in this project, matrix component logic is more complex, the use of template template to render components has been inappropriate, React each setState will trigger 'render' method, so we can customize the 'render' method in the methods customizing the 'render' method after the state changes, but this method will become cumbersome for components with complex logic, and my solution is through the Vue jsx conversion Plugin [babel-plugin-transform-vue-jsx](https://github.com/vuejs/babel-plugin-transform-vue-jsx) to use the jsx syntax to render the page, when the props or state changes automatically trigger 'render' method, the other to note that the Vue jsx and React jsx write a little difference , the template syntax will be invalidated when the 'render' method exists. The 'render' function is a useful utility in developing a file like a [React-log](https://github.com/diegomura/react-log) that does not need to render html only need to execute some methods. , Because this time does not need to render dom, and if the 'render' function, simply in the 'render' function in the return False on the line, such as: [React-log](https://github.com/diegomura/react-log/blob/b1bb695a6997cd1be399170186cf6ff1e27393d7/src/Log.js#L33)
 
 [http://localhost:8080](http://localhost:8080)
 

@@ -1,4 +1,4 @@
-import { transform, i18n, lan } from '../../unit/const'
+import { i18n, lan } from '../../unit/const'
 import { isMobile } from '../../unit'
 export default {
   name: 'Guide',
@@ -14,7 +14,7 @@ export default {
     QRTitle: () => i18n.QRNotice[lan],
     QRSrc: () =>
       window.location.protocol +
-      '//binaryify.github.io/vue-tetris/static/qr.jpeg'
+      '//raw.githubusercontent.com/Binaryify/vue-tetris/master/static/qr.jpeg'
   },
   mounted() {
     window.addEventListener('resize', this.resize.bind(this), true)
