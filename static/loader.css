@@ -2,6 +2,7 @@ body{
     background: #009688;
     padding: 0;
     margin: 0;
+    touch-action: manipulation;
 }
 .load{
     width:240px;
