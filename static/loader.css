@@ -3,6 +3,10 @@ body{
     padding: 0;
     margin: 0;
     touch-action: manipulation;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
 }
 .load{
     width:240px;
