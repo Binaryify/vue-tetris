@@ -38,9 +38,6 @@ Vuex 设计管理了所有应存的状态，这是上面持久化的保证。
 游戏框架使用的是 [Vue](https://github.com/vuejs/vue) + [Vuex](https://github.com/vuejs/vuex)
 
 
-
-
-
 ## 1、Web Audio Api
 游戏里有很多不同的音效，而实际上只引用了一个音效文件：[/build/music.mp3](https://github.com/Binaryify/vue-tetris/blob/master/build/music.mp3)。借助`Web Audio Api`能够以毫秒级精确、高频率的播放音效，这是`<audio>`标签所做不到的。在游戏进行中按住方向键移动方块，便可以听到高频率的音效。
 
