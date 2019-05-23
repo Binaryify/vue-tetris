@@ -15,13 +15,13 @@ Not only refers to the screen adaptation, `but the change of input depending on 
 ![phone](https://img.alicdn.com/tps/TB1kvJyOVXXXXbhaFXXXXXXXXXX-320-555.gif)
 
 ### Data persistence
-![previes](http://static.binaryify.com/persistence.gif)
+![previes](https://static.binaryify.com/persistence.gif)
 [video](https://www.youtube.com/watch?v=SzTNX7rg9Qg)
 
 What's the worst can happen when you're playing stand-alone games? Power outage. The state is stored in the `localStorage` by subscribing to `store.subscribe`, which records exactly all the state. Web page refreshes, the program crashes, the phone is dead, just re-open the connection and you can continue playing.
 
 ### Vuex state preview ([Vue DevTools extension](https://github.com/vuejs/vue-devtools))
-![preview](http://static.binaryify.com/vuex.gif)
+![preview](https://static.binaryify.com/vuex.gif)
 
 [video](https://www.youtube.com/watch?v=iuoSSTqSAUE)
 
