@@ -23,7 +23,15 @@
         left: 102px;
     }
     i {
-        display: block;
+        & i{
+            color: rgb(179, 179, 179);
+        }
+        & .arrows {
+            font-size: 40px;
+        }
+        display: flex;
+        align-items: center;
+        justify-content: center;
         position: relative;
         border: 1px solid #000;
         border-radius: 50%;
@@ -60,6 +68,12 @@
     }
     &.red i {
         .background(#dc3333, #de0000);
+    }
+    &.black i {
+        .background(#000000, #2c2c2c);
+    }
+    &.gray i {
+        .background(#444444, #555555);
     }
     &.s0 i {
         width: 160px;
