@@ -6,7 +6,7 @@ Please view [README.md](https://github.com/Binaryify/vue-tetris/blob/master/READ
 ----
 本项目灵感来源于 React 版的[俄罗斯方块](https://github.com/chvin/react-tetris),由于对其实现原理较感兴趣,而且相比于 React 更喜欢 Vue, 于是把 React 版的重构为了 Vue 版的,大致思路是把组件当成一个个函数,保证一个输入(props)能得到一个确定的输出(view),然后对不同方法也是做同样处理,对于 Redux 使用 Vuex 精简化
 
-戳：[http://binaryify.github.io/vue-tetris/?lan=zh](http://binaryify.github.io/vue-tetris/?lan=zh) 玩一玩！
+戳：[https://binaryify.github.io/vue-tetris/?lan=zh](https://binaryify.github.io/vue-tetris/?lan=zh) 玩一玩！
 
 ----
 ### 效果预览
