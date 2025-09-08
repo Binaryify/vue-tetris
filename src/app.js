@@ -8,7 +8,8 @@ import Point from './components/point/index.vue'
 import Keyboard from './components/keyboard/index.vue'
 import Logo from './components/logo/index.vue'
 import Matrix from './components/matrix/index.vue'
-import { mapState } from 'vuex'
+import { mapState } from 'pinia'
+import { useGameStore } from './stores/game'
 import { transform, lastRecord, speeds, i18n, lan } from './unit/const'
 import { visibilityChangeEvent, isFocus } from './unit/'
 import states from './control/states'
@@ -43,7 +44,7 @@ export default {
     },
     level: () => i18n.level[lan],
     nextText: () => i18n.next[lan],
-    ...mapState([
+    ...mapState(useGameStore, [
       'matrix',
       'keyboard',
       'music',
@@ -108,7 +109,7 @@ export default {
         // 读取记录
         if (lastRecord.cur && !lastRecord.pause) {
           // 拿到上一次游戏的状态, 如果在游戏中且没有暂停, 游戏继续
-          const speedRun = this.$store.state.speedRun
+          const speedRun = this.speedRun || 1
           let timeout = speeds[speedRun - 1] / 2 // 继续时, 给予当前下落速度一半的停留时间
           // 停留时间不小于最快速的速度
           timeout =

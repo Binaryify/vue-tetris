@@ -11,7 +11,7 @@ const down = store => {
     begin: 200,
     interval: 100,
     callback: () => {
-      const state = store.state
+      const state = store
       if (state.lock) {
         return
       }

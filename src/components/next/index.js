@@ -9,7 +9,7 @@ const xy = {
   O: [0, 1],
   T: [0, 0]
 }
-const empty = [[0, 0, 0, 0], [0, 0, 0, 0]]
+const makeEmpty = (rows = 4, cols = 4) => Array.from({ length: rows }, () => Array.from({ length: cols }, () => 0))
 
 export default {
   props: ['data'],
@@ -18,7 +18,7 @@ export default {
   },
   data() {
     return {
-      block: empty
+      block: makeEmpty(2, 4)
     }
   },
   watch: {
@@ -32,11 +32,19 @@ export default {
   methods: {
     build(type) {
       const shape = blockShape[type]
-      const block = empty.map(e => [...e])
+      // 目标 4x4 画布，容错避免越界
+      const block = makeEmpty(4, 4)
+      if (!shape || !xy[type]) {
+        this.block = block
+        return
+      }
       shape.forEach((m, k1) => {
         m.forEach((n, k2) => {
-          if (n) {
-            block[k1 + xy[type][0]][k2 + xy[type][1]] = 1
+          if (!n) return
+          const r = k1 + xy[type][0]
+          const c = k2 + xy[type][1]
+          if (r >= 0 && r < 4 && c >= 0 && c < 4) {
+            block[r][c] = 1
           }
         })
       })

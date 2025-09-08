@@ -2,15 +2,16 @@ import { want } from "../../unit/";
 import event from "../../unit/event";
 import states from "../states";
 import { music } from "../../unit/music";
+import { blankMatrix } from "../../unit/const";
 const down = store => {
-  store.commit("key_down", true);
-  if (store.state.cur !== null) {
+  store.commit('key_down', true);
+  if (store.cur !== null) {
     event.down({
       key: "down",
       begin: 40,
       interval: 40,
       callback: stopDownTrigger => {
-        const state = store.state;
+        const state = store;
         if (state.lock) {
           return;
         }
@@ -27,11 +28,12 @@ const down = store => {
         }
         const next = cur.fall();
         if (want(next, state.matrix)) {
-          store.commit("moveBlock", next);
+          store.commit('moveBlock', next);
           // store.dispatch(actions.moveBlock(next));
           states.auto();
         } else {
-          let matrix = JSON.parse(JSON.stringify(state.matrix));
+          const base = Array.isArray(state.matrix) ? state.matrix : blankMatrix
+          let matrix = base.map(row => row.slice());
           const shape = cur.shape;
           const xy = cur.xy;
           shape.forEach((m, k1) =>
@@ -55,10 +57,10 @@ const down = store => {
       begin: 200,
       interval: 100,
       callback: () => {
-        if (store.state.lock) {
+        if (store.lock) {
           return;
         }
-        const state = store.state;
+        const state = store;
         const cur = state.cur;
         if (cur) {
           return;
@@ -68,7 +70,7 @@ const down = store => {
         }
         let startLines = state.startLines;
         startLines = startLines - 1 < 0 ? 10 : startLines - 1;
-        store.commit("startLines", startLines);
+        store.commit('startLines', startLines);
         // store.dispatch(actions.startLines(startLines));
       }
     });
@@ -76,7 +78,7 @@ const down = store => {
 };
 
 const up = store => {
-  store.commit("key_down", false);
+  store.commit('key_down', false);
   event.up({
     key: "down"
   });

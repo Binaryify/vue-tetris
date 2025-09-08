@@ -1,4 +1,4 @@
-import store from '../vuex/store'
+import { useGameStore } from '../stores/game'
 import todo from './todo'
 
 const keyboard = {
@@ -25,6 +25,7 @@ const keyDown = e => {
     return
   }
   keydownActive = type
+  const store = useGameStore()
   todo[type].down(store)
 }
 
@@ -36,6 +37,7 @@ const keyUp = e => {
   if (type === keydownActive) {
     keydownActive = ''
   }
+  const store = useGameStore()
   todo[type].up(store)
 }
 

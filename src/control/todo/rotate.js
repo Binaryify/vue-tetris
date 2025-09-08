@@ -4,12 +4,12 @@ import states from '../states'
 import { music } from '../../unit/music'
 const down = store => {
   store.commit('key_rotate', true)
-  if (store.state.cur !== null) {
+  if (store.cur !== null) {
     event.down({
       key: 'rotate',
       once: true,
       callback: () => {
-        const state = store.state
+        const state = store
         if (state.lock) {
           return
         }
@@ -35,13 +35,13 @@ const down = store => {
       begin: 200,
       interval: 100,
       callback: () => {
-        if (store.state.lock) {
+        if (store.lock) {
           return
         }
         if (music.move) {
           music.move()
         }
-        const state = store.state
+        const state = store
         const cur = state.cur
         if (cur) {
           return

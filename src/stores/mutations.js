@@ -1,5 +1,6 @@
 import { getNextType } from '../unit'
 import Block from '../unit/block'
+
 const mutations = {
   nextBlock(state, data) {
     if (!data) {
@@ -75,3 +76,4 @@ const mutations = {
   }
 }
 export default mutations
+

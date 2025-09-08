@@ -12,12 +12,14 @@ const unit = {
     return blockType[Math.floor(Math.random() * len)]
   },
   want(next, matrix) {
-    // 方块是否能移到到指定位置
-    const xy = next.xy
-    const shape = next.shape
-    const horizontal = shape[0].length
+    // 方块是否能移到到指定位置（更健壮的边界/空值判断）
+    const xy = next.xy || [0, 0]
+    const shape = next.shape || []
+    const horizontal = (shape[0] && shape[0].length) || 0
     return shape.every((m, k1) =>
       m.every((n, k2) => {
+        const nx = xy[0] + k1
+        const ny = xy[1] + k2
         if (xy[1] < 0) {
           // left
           return false
@@ -26,21 +28,25 @@ const unit = {
           // right
           return false
         }
-        if (xy[0] + k1 < 0) {
+        if (nx < 0) {
           // top
           return true
         }
-        if (xy[0] + k1 >= 20) {
+        if (nx >= 20) {
           // bottom
           return false
         }
-        if (n) {
-          if (matrix[xy[0] + k1][xy[1] + k2]) {
-            return false
-          }
+        if (!n) {
           return true
         }
-        return true
+        const row = Array.isArray(matrix) ? matrix[nx] : undefined
+        if (!Array.isArray(row)) {
+          return false
+        }
+        if (ny < 0 || ny >= row.length) {
+          return false
+        }
+        return !row[ny]
       })
     )
   },
@@ -63,11 +69,15 @@ const unit = {
     return matrix[0].some(n => !!n)
   },
   subscribeRecord(store) {
-    // 将状态记录到 localStorage
-    store.subscribe(() => {
-      let data = store.state
+    // 将状态记录到 localStorage (Pinia)
+    const sub = store.$subscribe
+      ? store.$subscribe.bind(store)
+      // fallback for legacy (should not be used now)
+      : (fn) => store.subscribe(fn)
+
+    sub(() => {
+      let data = store.$state ? store.$state : store.state
       if (data.lock) {
-        // 当状态为锁定, 不记录
         return
       }
       data = JSON.stringify(data)

@@ -1,5 +1,5 @@
 import { isClear } from '../../unit/'
-import { fillLine, blankLine } from '../../unit/const'
+import { fillLine, blankLine, blankMatrix } from '../../unit/const'
 import states from '../../control/states'
 const t = setTimeout
 export default {
@@ -62,7 +62,8 @@ export default {
       const cur = props.cur
       const shape = cur && cur.shape
       const xy = cur && cur.xy
-      let matrix = JSON.parse(JSON.stringify(props.propMatrix))
+      const base = Array.isArray(props.propMatrix) ? props.propMatrix : blankMatrix
+      let matrix = JSON.parse(JSON.stringify(base))
       const clearLines = this.clearLines
       if (clearLines) {
         const animateColor = this.animateColor

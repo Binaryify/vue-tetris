@@ -2,13 +2,14 @@ import { want } from "../../unit/";
 import event from "../../unit/event";
 import states from "../states";
 import { music } from "../../unit/music";
+import { blankMatrix } from "../../unit/const";
 const down = store => {
-  store.commit("key_drop", true);
+  store.commit('key_drop', true);
   event.down({
     key: "space",
     once: true,
     callback: () => {
-      const state = store.state;
+      const state = store;
       if (state.lock) {
         return;
       }
@@ -28,9 +29,10 @@ const down = store => {
           bottom = cur.fall(index);
           index++;
         }
-        let matrix = JSON.parse(JSON.stringify(state.matrix));
+        const base = Array.isArray(state.matrix) ? state.matrix : blankMatrix
+        let matrix = base.map(row => row.slice());
         bottom = cur.fall(index - 2);
-        store.commit("moveBlock", bottom);
+        store.commit('moveBlock', bottom);
         const shape = bottom.shape;
         const xy = bottom.xy;
         shape.forEach((m, k1) =>
@@ -43,9 +45,9 @@ const down = store => {
             }
           })
         );
-        store.commit("drop", true);
+        store.commit('drop', true);
         setTimeout(() => {
-          store.commit("drop", false);
+          store.commit('drop', false);
         }, 100);
         states.nextAround(matrix);
       } else {
@@ -56,7 +58,7 @@ const down = store => {
 };
 
 const up = store => {
-  store.commit("key_drop", false);
+  store.commit('key_drop', false);
   event.up({
     key: "space"
   });

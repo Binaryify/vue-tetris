@@ -31,7 +31,7 @@ export default {
       data: []
     }
   },
-  destroyed() {
+  unmounted() {
     if (!this.propTime) {
       return
     }

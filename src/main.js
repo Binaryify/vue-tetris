@@ -1,15 +1,17 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
-import store from './vuex/store'
+import './unit/const'
+import { subscribeRecord } from './unit'
+import { useGameStore } from './stores/game'
+import './control'
 
-import './unit/const';
-import './control';
-import { subscribeRecord } from './unit';
-subscribeRecord(store); // 将更新的状态记录到localStorage
-Vue.config.productionTip = false
-/* eslint-disable no-new */
-new Vue({
-  el: '#root',
-  render: h => h(App),
-  store: store
-})
+const app = createApp(App)
+const pinia = createPinia()
+app.use(pinia)
+
+// 持久化订阅（Pinia）
+const game = useGameStore()
+subscribeRecord(game)
+
+app.mount('#root')

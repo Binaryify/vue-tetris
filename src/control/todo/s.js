@@ -12,7 +12,7 @@ const down = store => {
       if (store.state.lock) {
         return
       }
-      store.commit('music', !store.state.music)
+      store.commit('music', !store.music)
     }
   })
 }

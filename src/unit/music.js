@@ -1,4 +1,4 @@
-import store from '../vuex/store'
+import { useGameStore } from '../stores/game'
 // 使用 Web Audio API
 const AudioContext =
   window.AudioContext ||
@@ -43,7 +43,8 @@ export const music = {}
         music.start = () => {
           // 游戏开始
           music.killStart()
-          if (!store.state.music) {
+          const store = useGameStore()
+          if (!store.music) {
             return
           }
           getSource().start(0, 3.7202, 3.6224)
@@ -51,7 +52,8 @@ export const music = {}
 
         music.clear = () => {
           // 消除方块
-          if (!store.state.music) {
+          const store = useGameStore()
+          if (!store.music) {
             return
           }
           getSource().start(0, 0, 0.7675)
@@ -59,7 +61,8 @@ export const music = {}
 
         music.fall = () => {
           // 立即下落
-          if (!store.state.music) {
+          const store = useGameStore()
+          if (!store.music) {
             return
           }
           getSource().start(0, 1.2558, 0.3546)
@@ -67,7 +70,8 @@ export const music = {}
 
         music.gameover = () => {
           // 游戏结束
-          if (!store.state.music) {
+          const store = useGameStore()
+          if (!store.music) {
             return
           }
           getSource().start(0, 8.1276, 1.1437)
@@ -75,7 +79,8 @@ export const music = {}
 
         music.rotate = () => {
           // 旋转
-          if (!store.state.music) {
+          const store = useGameStore()
+          if (!store.music) {
             return
           }
           getSource().start(0, 2.2471, 0.0807)
@@ -83,7 +88,8 @@ export const music = {}
 
         music.move = () => {
           // 移动
-          if (!store.state.music) {
+          const store = useGameStore()
+          if (!store.music) {
             return
           }
           getSource().start(0, 2.9088, 0.1437)

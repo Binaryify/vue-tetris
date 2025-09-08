@@ -1,4 +1,4 @@
-import store from '../vuex/store'
+import { useGameStore } from '../stores/game'
 import { want, isClear, isOver } from '../unit/'
 import {
   speeds,
@@ -54,10 +54,11 @@ const states = {
 
   // 游戏开始
   start: () => {
+    const store = useGameStore()
     if (music.start) {
       music.start()
     }
-    const state = store.state
+    const state = store
     states.dispatchPoints(0)
     store.commit('speedRun', state.speedStart)
     const startLines = state.startLines
@@ -71,17 +72,19 @@ const states = {
   // 自动下落
   auto: timeout => {
     const out = timeout < 0 ? 0 : timeout
-    let state = store.state
+    const store = useGameStore()
+    let state = store
     let cur = state.cur
     const fall = () => {
-      state = store.state
+      state = store
       cur = state.cur
       const next = cur.fall()
       if (want(next, state.matrix)) {
         store.commit('moveBlock', next)
         states.fallInterval = setTimeout(fall, speeds[state.speedRun - 1])
       } else {
-        let matrix = JSON.parse(JSON.stringify(state.matrix))
+        const base = Array.isArray(state.matrix) ? state.matrix : blankMatrix
+        let matrix = base.map(row => row.slice())
         const shape = cur && cur.shape
         const xy = cur && cur.xy
         shape.forEach((m, k1) =>
@@ -107,13 +110,14 @@ const states = {
   // 一个方块结束, 触发下一个
   nextAround: (matrix, stopDownTrigger) => {
     clearTimeout(states.fallInterval)
+    const store = useGameStore()
     store.commit('lock', true)
     store.commit('matrix', matrix)
     if (typeof stopDownTrigger === 'function') {
       stopDownTrigger()
     }
 
-    const addPoints = store.state.points + 10 + (store.state.speedRun - 1) * 2 // 速度越快, 得分越高
+    const addPoints = store.points + 10 + (store.speedRun - 1) * 2 // 速度越快, 得分越高
 
     states.dispatchPoints(addPoints)
 
@@ -132,7 +136,7 @@ const states = {
     }
     setTimeout(() => {
       store.commit('lock', false)
-      store.commit('moveBlock', { type: store.state.next })
+      store.commit('moveBlock', { type: store.next })
       store.commit('nextBlock', '')
       states.auto()
     }, 100)
@@ -140,12 +144,13 @@ const states = {
 
   // 页面焦点变换
   focus: isFocus => {
+    const store = useGameStore()
     store.commit('focus', isFocus)
     if (!isFocus) {
       clearTimeout(states.fallInterval)
       return
     }
-    const state = store.state
+    const state = store
     if (state.cur && !state.reset && !state.pause) {
       states.auto()
     }
@@ -153,6 +158,7 @@ const states = {
 
   // 暂停
   pause: isPause => {
+    const store = useGameStore()
     store.commit('pause', isPause)
     if (isPause) {
       clearTimeout(states.fallInterval)
@@ -163,7 +169,8 @@ const states = {
 
   // 消除行
   clearLines: (matrix, lines) => {
-    const state = store.state
+    const store = useGameStore()
+    const state = store
     let newMatrix = JSON.parse(JSON.stringify(matrix))
     lines.forEach(n => {
       newMatrix.splice(n, 1)
@@ -190,6 +197,7 @@ const states = {
   // 游戏结束, 触发动画
   overStart: () => {
     clearTimeout(states.fallInterval)
+    const store = useGameStore()
     store.commit('lock', true)
     store.commit('reset', true)
     store.commit('pause', false)
@@ -197,6 +205,7 @@ const states = {
 
   // 游戏结束动画完成
   overEnd: () => {
+    const store = useGameStore()
     store.commit('matrix', blankMatrix)
     store.commit('moveBlock', { reset: true })
     store.commit('reset', false)
@@ -207,8 +216,9 @@ const states = {
   // 写入分数
   dispatchPoints: point => {
     // 写入分数, 同时判断是否创造最高分
+    const store = useGameStore()
     store.commit('points', point)
-    if (point > 0 && point > store.state.max) {
+    if (point > 0 && point > store.max) {
       store.commit('max', point)
     }
   }

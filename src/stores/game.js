@@ -1,12 +1,9 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import { getNextType } from '../unit'
-import mutations from './mutations'
-import { isFocus } from '../unit/'
+import { defineStore } from 'pinia'
+import { getNextType, isFocus } from '../unit'
 import { blankMatrix, lastRecord, maxPoint, blockType } from '../unit/const'
 import Block from '../unit/block'
 import { hasWebAudioAPI } from '../unit/music'
-Vue.use(Vuex)
+import mutations from './mutations'
 
 let clearLinesInitState = lastRecord &&
   !isNaN(parseInt(lastRecord.clearLines, 10))
@@ -18,7 +15,6 @@ if (clearLinesInitState < 0) {
 
 const curInitState = (() => {
   if (!lastRecord || !lastRecord.cur) {
-    // 无记录 或 有记录 但方块为空, 返回 null
     return null
   }
   const cur = lastRecord.cur
@@ -101,38 +97,44 @@ if (startLinesInitState < 0 || startLinesInitState > 10) {
 const resetInitState = lastRecord && lastRecord.reset
   ? !!lastRecord.reset
   : false
-const state = {
-  music: musicInitState,
-  pause: pauseInitState,
-  matrix: matrixInitState,
-  next: nextInitState,
-  cur: curInitState,
-  // dispatch: '',
-  speedStart: speedStartInitState,
-  speedRun: speedRunInitState,
-  startLines: startLinesInitState,
-  clearLines: clearLinesInitState,
-  points: pointsInitState,
-  max: maxInitState,
-  reset: resetInitState,
-  drop: dropInitState,
-  keyboard: {
-    drop: false,
-    down: false,
-    left: false,
-    right: false,
-    rotate: false,
-    reset: false,
-    music: false,
-    pause: false
-  },
 
-  lock: lockInitState,
-  focus: isFocus()
-}
-export default new Vuex.Store({
-  state,
-  // getters,
-  // actions,
-  mutations
+export const useGameStore = defineStore('game', {
+  state: () => ({
+    music: musicInitState,
+    pause: pauseInitState,
+    matrix: matrixInitState,
+    next: nextInitState,
+    cur: curInitState,
+    speedStart: speedStartInitState,
+    speedRun: speedRunInitState,
+    startLines: startLinesInitState,
+    clearLines: clearLinesInitState,
+    points: pointsInitState,
+    max: maxInitState,
+    reset: resetInitState,
+    drop: dropInitState,
+    keyboard: {
+      drop: false,
+      down: false,
+      left: false,
+      right: false,
+      rotate: false,
+      reset: false,
+      music: false,
+      pause: false
+    },
+    lock: lockInitState,
+    focus: isFocus()
+  }),
+  actions: {
+    // Vuex-like commit to avoid name conflicts with state keys
+    commit(type, payload) {
+      const fn = mutations[type]
+      if (typeof fn === 'function') {
+        fn(this, payload)
+      } else if (import.meta && import.meta.env && import.meta.env.DEV) {
+        console.warn('[pinia.commit] unknown mutation:', type)
+      }
+    }
+  }
 })

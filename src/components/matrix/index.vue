@@ -1,4 +1,4 @@
-<script src="./index.js">
+<script src="./index.jsx">
 </script>
 
 <style lang="less">
